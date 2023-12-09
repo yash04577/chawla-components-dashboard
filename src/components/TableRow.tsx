@@ -1,4 +1,5 @@
 import { MdModeEditOutline } from "react-icons/md";
+import {useNavigate} from "react-router-dom"
 
 type Props = {
     id: string,
@@ -6,10 +7,11 @@ type Props = {
     type: string,
     unit: string,
     objectId: string,
-    setIsModalOpen: () => void;
 };
 
-const TableRow = ({id, materialName, type, unit, objectId, setIsModalOpen}: Props) => {
+const TableRow = ({id, materialName, type, unit, objectId}: Props) => {
+
+  const navigate = useNavigate();
 
   const saveMaterial = async() =>{
 
@@ -24,7 +26,7 @@ const TableRow = ({id, materialName, type, unit, objectId, setIsModalOpen}: Prop
       </div>
       <div className="w-[120px] uppercase">{type}</div>
       <div className="w-[77px] capitalize">{unit}</div>
-      <div className="flex justify-center items-center cursor-pointer" onClick={()=>setIsModalOpen()}><MdModeEditOutline/></div>
+      <div className="flex justify-center items-center cursor-pointer" onClick={()=>navigate("/updatematerial")}><MdModeEditOutline/></div>
     </div>
   );
 };

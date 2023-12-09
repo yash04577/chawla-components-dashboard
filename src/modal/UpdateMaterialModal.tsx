@@ -1,17 +1,14 @@
 import { IoMdSettings } from "react-icons/io";
 import { useState, useEffect} from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom"
 
-type Props = {
-    setIsModalOpen: () => void
-}
+const UpdateMaterialModal = () => {
 
+    const [material, setMaterial] = useState({id:"",materialName:"",type:"",unit:"", objectId:""});
+    const navigate = useNavigate();
 
-const UpdateMaterialModal = ({setIsModalOpen}: Props) => {
-
-    const [material, setMaterial] = useState({id:"",materialName:"",type:"",unit:""});
-
-    const changeHandler = (e) =>{
+    const changeHandler = (e:any) =>{
 
         const { name, value } = e.target;
         setMaterial(prevState => ({...prevState,[name]: value}));
@@ -32,8 +29,10 @@ const UpdateMaterialModal = ({setIsModalOpen}: Props) => {
     }
 
     useEffect(() => {
-      setMaterial(JSON.parse(localStorage.getItem("material")))
+        const materialData = localStorage.getItem("material");
+        setMaterial(materialData && JSON.parse(materialData));
     },[])
+
   return (
     <div className='w-screen h-screen bg-slate-300 flex justify-center items-center'>
 
@@ -68,13 +67,11 @@ const UpdateMaterialModal = ({setIsModalOpen}: Props) => {
             {/* submit buttons */}
             <div className='flex justify-end'>
                 <div className='flex gap-4'>
-                    <button className='px-4 py-2 rounded-lg border border-[#666666] text-[#666666]' onClick={setIsModalOpen}>Cancel</button>
+                    <button className='px-4 py-2 rounded-lg border border-[#666666] text-[#666666]' onClick={()=>navigate("/")}>Cancel</button>
                     <button onClick={updateHandler} className='bg-[#283093] text-white rounded-lg px-4 py-2'>Update Material</button>
                 </div>
             </div>
         </div>
-
-
     </div>
   )
 }

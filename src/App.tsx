@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import data from "./data/data.json";
+// import data from "./data/data.json";
 import TableRow from "./components/TableRow";
 import { FaBell } from "react-icons/fa";
 import { FaRegCalendar } from "react-icons/fa";
@@ -13,34 +13,22 @@ import { MdOutlineKeyboardReturn } from "react-icons/md";
 import SidebarLink from "./components/SidebarLink";
 import { BsStars } from "react-icons/bs";
 import axios from "axios";
-import UpdateMaterialModal from "./modal/UpdateMaterialModal";
-
+import {useNavigate} from "react-router-dom"
 
 function App() {
-  const [tableData, setTableData] = useState(data);
-  // const tableData = (data);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [tableData, setTableData] = useState([{id:"", materialName:"", type:"", unit:"", _id:""}]);
+  const navigate = useNavigate();
 
   const fetchData = async() =>{
     const res = await axios.get("http://localhost:3000/material")
     setTableData(res.data.allMaterial);
   }
 
-  const handleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-
-  const handleAddModal = () =>{
-    setIsAddModalOpen(!isAddModalOpen);
-  }
-
   useEffect(()=>{
     fetchData();
   },[])
 
-  return !isModalOpen ? (
-    <>
+  return <>
       <div className="w-screen h-screen overflow-x-hidden">
         <div className="h-screen mx-auto">
           {/* header */}
@@ -109,7 +97,7 @@ function App() {
                   <p className="text-[24px] font-bold leading-8">
                     Raw Material & BOP
                   </p>
-                  <button onClick={handleAddModal} className="w-[155px] h-[40px] rounded-lg py-3 px-4 text-[#283093] border justify-center border-[#283093] flex items-center">
+                  <button onClick={()=>navigate("/addmaterial")} className="w-[155px] h-[40px] rounded-lg py-3 px-4 text-[#283093] border justify-center border-[#283093] flex items-center">
                     + New Metrial
                   </button>
                 </div>
@@ -132,7 +120,6 @@ function App() {
                       type={elem.type}
                       unit={elem.unit}
                       objectId={elem._id}
-                      setIsModalOpen={handleModal}
                     />
                   ))}
                 </div>
@@ -142,9 +129,7 @@ function App() {
         </div>
       </div>
     </>
-  ) : (
-    <UpdateMaterialModal setIsModalOpen={handleModal} />
-  );
+  
 }
 
 export default App;
